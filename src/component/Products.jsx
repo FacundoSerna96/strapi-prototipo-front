@@ -12,10 +12,11 @@ export default function Products() {
     useEffect(() => {
         const getProducts = async () => {
             setLoading(true);
-            const response = await fetch("https://fakestoreapi.com/products");
+            const response = await fetch("http://localhost:1337/api/productos?populate=*");
             if(componentMounted){
-                setData(await response.clone().json());
-                setFilter(await response.json());
+                let respuesta = await response.json();
+                setData(respuesta.data);
+                setFilter(respuesta.data);
                 setLoading(false);
                 console.log(filter);
             }
@@ -56,22 +57,23 @@ export default function Products() {
         return (
             <>
             <div className="buttons d-flex mb-5 pb-5">
-                    <button className="btn me-2" onClick={()=>setFilter(data)}>Shop All</button>
-                    <button className="btn me-2" onClick={()=>filterProduct("men's clothing")}>Men's Clothing</button>
-                    <button className="btn me-2" onClick={()=>filterProduct("women's clothing")}>Women's Clothing</button>
+                    <button className="btn me-2" onClick={()=>setFilter(data)}>Todo</button>
+                    <button className="btn me-2" onClick={()=>filterProduct("men's clothing")}>Productos</button>
+                    <button className="btn me-2" onClick={()=>filterProduct("women's clothing")}>Cursos</button>
                     <button className="btn me-2" onClick={()=>filterProduct("jewelery")}>Jewelery</button>
                     <button className="btn me-2" onClick={()=>filterProduct("electronics")}>Electronic</button>
                 </div>
                 {filter.map((product) => {
+                    console.log('productos',product)
                     return (
                         <>
                             <div className="col-md-3 mb-4 py-4" id="p">
                                 <div class="card h-100 p-4" key={product.id}>
-                                    <img src={product.image} class="card-img-top" alt={product.title} height="275px" />
+                                    <img src={`http://localhost:1337`+product.attributes.imagen.data[0].attributes.url} class="card-img-top" alt={product.attributes.nombre} height="275px" />
                                     <div class="card-body">
-                                        <h5 class="card-title mb-0">{product.title.substring(0,20)}...</h5>
-                                        <p class="card-text lead">${product.price}</p>
-                                        <Link to={`/products/${product.id}`} class="btn btn-dark">ADD ITEM</Link>
+                                        <h5 class="card-title mb-0">{product.attributes.nombre}...</h5>
+                                        <p class="card-text lead">${product.attributes.precio}</p>
+                                        <Link to={`/products/${product.id}`} class="btn btn-dark">AGREGAR</Link>
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +90,7 @@ export default function Products() {
         <div>
                 <div className="row">
                     <div>
-                        <p>Best Seller</p>
+                        <p>Mas vendidos</p>
                         <br></br>
                     </div>
                 </div>

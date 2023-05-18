@@ -18,9 +18,11 @@ export default function Product() {
     useEffect(() => {
         const getProduct = async () => {
             setLoading(true);
-            const response = await fetch(`https://fakestoreapi.com/products/${id}`)
-            setProduct(await response.json());
+            const response = await fetch(`http://localhost:1337/api/productos/${id}?populate=*`)
+            let respuesta = await response.json();
+            setProduct(respuesta);
             setLoading(false);
+            console.log('respuesta',respuesta);
         }
         getProduct();
     }, []);
@@ -49,25 +51,25 @@ export default function Product() {
       <>
         <div className='col-md-6'>
           <br></br>
-            <img src={product.image} alt={product.title} height="400px" width="400px"></img>
+            <img src={product.attributes.imagen.data[0].attributes.url} height="400px" width="400px"></img>
         </div>
         <div className='col-md-6'>
             <p className='lead text-black-50'>
-              {product.category}
+              {''}
             </p>
             <p className='lead my-1'>
-              {product.rating && product.rating.rate} <i className='fa fa-star'></i>
+              {''} <i className='fa fa-star'></i>
             </p>
-            <h1 className='display-5'>{product.title}</h1>
+            <h1 className='display-5'>{''}</h1>
             <h3 className='display-4 my-4'>
-              $ {product.price}
+              $ {''}
             </h3>
             <br></br>
-            <h5>PRODUCT DESCRIPTION</h5>
-            <p className='lead'>{product.description}</p><br></br>
+            <h5>Descripción</h5>
+            <p className='lead'>{''}</p><br></br>
             <div class="d-grid gap-2">
-            <button class="btn btn-dark" onClick={()=>addProduct(product)}>ADD TO CART</button>
-            <NavLink to="/cart" class="btn btn-dark fw-bold" type="button">View Cart</NavLink>
+            <button class="btn btn-dark" onClick={()=>addProduct('')}>Agregar al carrito</button>
+            <NavLink to="/cart" class="btn btn-dark fw-bold" type="button">Ver</NavLink>
           </div>
           
           
